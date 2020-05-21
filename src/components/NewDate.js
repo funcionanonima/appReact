@@ -1,22 +1,27 @@
 import React, {Component} from 'react';
 import uuid from 'uuid';
 
+const initialState = {
+    date : {
+        pet : '',
+        owner : '',
+        date : '',
+        hour : ''
+    },
+    error : false
+}
+
 class NewDate extends Component{
     state = {
-        date : {
-            pet : '',
-            owner : '',
-            date : '',
-            hour : ''
-        },
-        error : false
+        ...initialState
     }
 
     //manejador de eventos para cuando el usuario escribe en los campos
     handleChange = e => {
         // e.target.name para saber de cúal elemento tomas el valor
         // e.target.value para saber cúal es el valor
-        console.log(e.target.name + ': ' + e.target.value);
+
+        // console.log(e.target.name + ': ' + e.target.value);
 
         //colocar lo que el usuario escribe en el state
         this.setState({
@@ -50,16 +55,27 @@ class NewDate extends Component{
 
         // agregar cita al state de la app
         this.props.createNewDate(newDate);
+
+        //colocar en el staTE   , EL STATE inicial
+        this.setState({
+            ...initialState
+        })
     }
 
 
     render(){
+
+        //extraer el valor del error desde el state
+        const{error} = this.state;
+
         return(
             <div className="card mt-5 py-5">
                 <div className="card-body">
                     <h2 className="card-title text-center mb-5">
                         Formulario para citas
                     </h2>
+
+                    {error ? <div className="alert alert-danger mt-2 mb-5 text-center">Debes completar todos los campos</div> : null}
 
                     <form
                         onSubmit={this.handleSubmit}
